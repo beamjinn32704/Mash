@@ -1,0 +1,17 @@
+help
+cd
+cd ..
+YAY
+c..
+cd..
+cd -help
+exit
+cd
+cd ..
+cd..
+cd.
+cd ..
+cd -help
+cd
+list
+help
