@@ -60,7 +60,6 @@ public class MasterPrompt extends ConsoleWindow {
     }
     
     /*
-    Name Ideas:
         LightenedNight
         InvisibleDay
         Fast Quick Dark

@@ -82,14 +82,7 @@ public class CommandData implements Cacheable<CommandData>{
     }
     
     public boolean getParamVal(ParamsHelper paramOption){
-        String[] arr = ProgramHelper.toArr(paramOption);
-        for (String str : arr){
-            boolean has = ArrayUtil.sortedHas(params, str);
-            if(has){
-                return true;
-            }
-        }
-        return false;
+        return ArrayUtil.sortedHas(params, ProgramHelper.toArr(paramOption));
     }
     
     public boolean showHelp(){
