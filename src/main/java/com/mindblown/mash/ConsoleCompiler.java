@@ -131,6 +131,8 @@ public class ConsoleCompiler implements Compiler {
                 "\nCommand Plain Params: " + Arrays.toString(data.getPlainParams()));
         String commandName = data.getCommandName().toLowerCase();
         
+        System.out.println("SHOW HELP: " + data.showHelp());
+        
         try {
             int index = ArrayListUtil.sortedIndexOf(programList, commandName);
             if(index >= 0){

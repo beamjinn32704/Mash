@@ -83,6 +83,7 @@ public class Param implements Cacheable<Param>, Comparable{
                 int firstSpaceInd = text.indexOf(" ", dashInd + 1);
                 if(firstSpaceInd == -1){
                     String paramName = text.substring(dashInd+1);
+                    
                     textDiscarded.add(text.substring(0, dashInd));
                     text = "";
                     return new Param(paramName);
