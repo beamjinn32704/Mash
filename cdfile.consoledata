@@ -1,22 +1,22 @@
-help
+help
+cd
+cd ..
+YAY
+c..
+cd..
+cd -help
+exit
 cd
 cd ..
-YAY
-c..
 cd..
+cd.
+cd ..
 cd -help
-exit
+cd
+list
+help
+fff
 cd
-cd ..
-cd..
-cd.
-cd ..
-cd -help
-cd
-list
-help
-fff
-cd
-cd -help
-cd help
+cd -help
+cd help
 cd -help
