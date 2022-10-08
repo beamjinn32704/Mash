@@ -11,14 +11,11 @@
             <artifactId>Util</artifactId>
             <version>${project.version}</version>
         </dependency>
-<<<<<<< Updated upstream
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>DebuggerUtil</artifactId>
             <version>${project.version}</version>
         </dependency>
-=======
->>>>>>> Stashed changes
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
