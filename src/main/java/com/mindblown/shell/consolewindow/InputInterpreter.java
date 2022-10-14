@@ -2,28 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mindblown.shell;
+package com.mindblown.shell.consolewindow;
 
-import com.mindblown.debuggerutil.DebugPrinter;
-import com.mindblown.debuggerutil.DebugWatch;
-import com.mindblown.util.ArrayListUtil;
-import com.mindblown.util.StringUtil;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import com.mindblown.shell.Command;
+import com.mindblown.shell.MainCompiler;
 import java.awt.event.KeyEvent;
-import java.io.PrintWriter;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-import javax.swing.text.AbstractDocument.Content;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.StyledDocument;
 
 /**
  * Objects of this class are used to interpret any key strokes the user types.
@@ -33,7 +21,7 @@ import javax.swing.text.StyledDocument;
  *
  * @author beamj
  */
-public class ConsoleWindowInputInterpreter {
+public class InputInterpreter {
 
     //This is the Console Window that objects of this class will be modifying
     private ConsoleWindow consoleWindow;
@@ -43,7 +31,7 @@ public class ConsoleWindowInputInterpreter {
     private JTextPane consoleTextPane; // the console window text pane
 
     //Used to make edits to the console window text
-    private ConsoleWindowTextEditor textEditor;
+    private TextEditor textEditor;
 
     // This contains all the text and the styles of the text (text color, bold, italic, etc.) in the console text pane
     private ConsoleStyledDocument consoleTextStyledDocument;
@@ -56,7 +44,7 @@ public class ConsoleWindowInputInterpreter {
      * @param consoleWin the console window that objects of this class will
      * modify and change the text of
      */
-    public ConsoleWindowInputInterpreter(ConsoleWindow consoleWin) {
+    public InputInterpreter(ConsoleWindow consoleWin) {
         consoleWindow = consoleWin;
 
         consoleScrollPane = consoleWindow.getScrollPane();
@@ -88,7 +76,7 @@ public class ConsoleWindowInputInterpreter {
             System.out.println("\"" + textPaneText + "\"");
             System.out.println(textPaneText.length());
         } catch (BadLocationException ex) {
-            Logger.getLogger(ConsoleWindowInputInterpreter.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InputInterpreter.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         //Find out what the user pressed and map it to the right function to take care of it
@@ -262,7 +250,7 @@ public class ConsoleWindowInputInterpreter {
         textEditor.addText("\n\n");
         textEditor.setStartingIndex(consoleWindow.getNumOfCharacters());
         mainCompiler.processCommand(new Command("go"));
-//        ..Have created the Command object. Now work on conntecting the ConsoleWindowInputInterpreter to the MainCompiler
+//        ..Have created the Command object. Now work on conntecting the InputInterpreter to the MainCompiler
 //                ..Start getting a command to work, even if its useless (like making it so that when the user types "hi"),
 //                the program does System.out.println("Hi to you too!")
     }

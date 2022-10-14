@@ -4,6 +4,8 @@
  */
 package com.mindblown.shell;
 
+import com.mindblown.shell.consolewindow.ConsoleWindow;
+
 /**
  * This is the compiler used by the ConsoleWindow when the ConsoleWindow starts.
  * It contains the normal, "default" commands like cd, exit, open, etc.

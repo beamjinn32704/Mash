@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mindblown.shell;
+package com.mindblown.shell.consolewindow;
 
 import javax.swing.text.DefaultCaret;
 
@@ -12,9 +12,9 @@ import javax.swing.text.DefaultCaret;
  * the style/format of the Console Window are automatically applied here.
  * @author beamj
  */
-public class ConsoleWindowCaret extends DefaultCaret {
+public class Caret extends DefaultCaret {
 
-    public ConsoleWindowCaret() {
+    public Caret() {
         setBlinkRate(500);
     }
 }

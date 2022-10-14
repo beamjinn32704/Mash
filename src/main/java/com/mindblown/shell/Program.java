@@ -4,6 +4,10 @@
  */
 package com.mindblown.shell;
 
+import com.mindblown.shell.consolewindow.ConsoleStyledDocument;
+import com.mindblown.shell.consolewindow.ConsoleWindow;
+import com.mindblown.shell.consolewindow.TextEditor;
+
 /**
  * This is the result of a command the user types into the ConsoleWindow. It is
  * a series of actions that run as a result of the command.
@@ -15,7 +19,7 @@ package com.mindblown.shell;
 public class Program implements Runnable {
 
     protected final ConsoleWindow consoleWindow;
-    protected final ConsoleWindowTextEditor textEditor;
+    protected final TextEditor textEditor;
     protected final ConsoleStyledDocument consoleTextStyledDocument;
 
     public Program(ConsoleWindow cw) {

@@ -4,6 +4,8 @@
  */
 package com.mindblown.shell;
 
+import com.mindblown.shell.consolewindow.ConsoleWindow;
+import com.mindblown.shell.consolewindow.InputInterpreter;
 import com.mindblown.debuggerutil.DebugPrinter;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -44,7 +46,7 @@ public class TestProgram extends Program {
                         timer.cancel();
                     }
                 } catch (BadLocationException ex) {
-                    Logger.getLogger(ConsoleWindowInputInterpreter.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(InputInterpreter.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }, 0, 500);

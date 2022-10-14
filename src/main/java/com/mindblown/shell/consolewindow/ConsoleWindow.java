@@ -3,12 +3,10 @@
 * To change this template file, choose Tools | Templates
 * and open the template in the editor.
  */
-package com.mindblown.shell;
+package com.mindblown.shell.consolewindow;
 
-import com.mindblown.debuggerutil.DebugPrinter;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-import javax.swing.text.StyledDocument;
 
 /**
  * This is the Java window that displays the information in the console (it
@@ -21,9 +19,9 @@ import javax.swing.text.StyledDocument;
  */
 public class ConsoleWindow extends javax.swing.JFrame {
 
-    private ConsoleWindowSettingsEditor settingsEditor;
-    private ConsoleWindowTextEditor textEditor;
-    private ConsoleWindowInputInterpreter inputInterpreter;
+    private SettingsEditor settingsEditor;
+    private TextEditor textEditor;
+    private InputInterpreter inputInterpreter;
 
     // This contains all the text and the styles of the text (text color, bold, italic, etc.) in the console text pane
     private ConsoleStyledDocument consoleTextStyledDocument = new ConsoleStyledDocument();
@@ -42,9 +40,9 @@ public class ConsoleWindow extends javax.swing.JFrame {
     public ConsoleWindow() {
         initComponents();
         
-        settingsEditor = new ConsoleWindowSettingsEditor(this);
-        textEditor = new ConsoleWindowTextEditor(this);
-        inputInterpreter = new ConsoleWindowInputInterpreter(this);
+        settingsEditor = new SettingsEditor(this);
+        textEditor = new TextEditor(this);
+        inputInterpreter = new InputInterpreter(this);
         
 //        program = new Program(compiler, this);
         
@@ -58,7 +56,7 @@ public class ConsoleWindow extends javax.swing.JFrame {
      *
      * @return
      */
-    public ConsoleWindowSettingsEditor getSettingsEditor() {
+    public SettingsEditor getSettingsEditor() {
         return settingsEditor;
     }
 
@@ -67,7 +65,7 @@ public class ConsoleWindow extends javax.swing.JFrame {
      *
      * @return
      */
-    public ConsoleWindowTextEditor getTextEditor() {
+    public TextEditor getTextEditor() {
         return textEditor;
     }
 

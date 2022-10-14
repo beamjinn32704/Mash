@@ -2,11 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mindblown.shell;
+package com.mindblown.shell.consolewindow;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -18,7 +17,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
  * the scroll rate of the scroll bars, the background color of the Console Window, etc.
  * @author beamj
  */
-public class ConsoleWindowSettingsEditor {
+public class SettingsEditor {
     
     //This is the Console Window that objects of this class will be modifying
     private ConsoleWindow consoleWindow;
@@ -28,7 +27,7 @@ public class ConsoleWindowSettingsEditor {
     private JTextPane consoleTextPane; // the console window text pane
     
     //The text cursor of the console window
-    private ConsoleWindowCaret consoleCaret;
+    private Caret consoleCaret;
     
     /* Font Settings */
     //System font settings are the font settings objects of this class 'prefers'. What this means is that in functions when this object 
@@ -44,7 +43,7 @@ public class ConsoleWindowSettingsEditor {
      * Instantiates a Console Window Settings Editor. 
      * @param consoleWin the console window that objects of this class will modify and change the settings of
      */
-    public ConsoleWindowSettingsEditor(ConsoleWindow consoleWin) {
+    public SettingsEditor(ConsoleWindow consoleWin) {
         consoleWindow = consoleWin;
         
         

@@ -2,14 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mindblown.shell;
+package com.mindblown.shell.consolewindow;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.StyledDocument;
 
 /**
  * Objects of this class are used to make changes to the text area in the
@@ -18,7 +15,7 @@ import javax.swing.text.StyledDocument;
  *
  * @author beamj
  */
-public class ConsoleWindowTextEditor {
+public class TextEditor {
 
     //This is the Console Window that objects of this class will be modifying
     private ConsoleWindow consoleWindow;
@@ -41,7 +38,7 @@ public class ConsoleWindowTextEditor {
      * @param consoleWin the console window that objects of this class will
      * modify and change the text of
      */
-    public ConsoleWindowTextEditor(ConsoleWindow consoleWin) {
+    public TextEditor(ConsoleWindow consoleWin) {
         consoleWindow = consoleWin;
 
         consoleScrollPane = consoleWindow.getScrollPane();
