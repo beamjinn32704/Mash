@@ -31,7 +31,6 @@ public class MainCompiler extends OverlayingCompiler {
 
     @Override
     public void processCommand(Command command) {
-        TestProgram test = new TestProgram(consoleWindow);
-        test.run();
+        
     }
 }

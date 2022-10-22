@@ -59,6 +59,14 @@ public class TextEditor {
         consoleTextPane.setCaretPosition(Math.min(index, consoleWindow.getNumOfCharacters()));
 
     }
+    
+    /**
+     * Return the index of the first character in the console window that can be edited by the user.
+     * @return the index of the first character that can be edited
+     */
+    public int getStartEditableIdx() {
+        return startingIndex;
+    }
 
     /**
      * Sets the text cursor to the end of the console window's text
@@ -77,9 +85,6 @@ public class TextEditor {
     public void setStartingIndex(int startingIndex) {
         this.startingIndex = startingIndex;
     }
-    
-    ..Trying to figure out whether starting index should be in textEditor or console interpreter. If its in the interpreter, then Programs
-            need to have access to the interpreter
     
     /**
      * Returns whether the text cursor in the console window is in an area where
@@ -166,6 +171,7 @@ public class TextEditor {
      * but not the character after this index.
      */
     public void removeText(int startIndex, int endIndex) {
+        assert(endIndex > startIndex && startIndex >= 0 && endIndex < consoleWindow.getNumOfCharacters());
         consoleTextStyleDoc.allowEdits();
         try {
             //Do the "endIndex - startIndex + 1" because this makes sure the endIndex is included

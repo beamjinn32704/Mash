@@ -6,6 +6,7 @@ package com.mindblown.shell.consolewindow;
 
 import com.mindblown.shell.Command;
 import com.mindblown.shell.MainCompiler;
+import com.mindblown.util.StringUtil.StringEvaluator;
 import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -101,8 +102,8 @@ public class InputInterpreter {
         if (isModifier(evt)) {
             //Do nothing if the event is triggered by pressing a modifier (ctrl, alt, shift, etc.)
         } else if (modified(evt)) {
-            if (ctrl && !alt && !shift && !altGraph) {
-                //If Ctrl is being held, support Ctrl-A, Ctrl-C, and Ctrl-V.
+            if (ctrl && !alt && !shift && !altGraph) { // If Ctrl is being held and nothing else
+                //Support Ctrl-A, Ctrl-C, and Ctrl-V.
                 switch (keyCode) {
                     case KeyEvent.VK_A -> {
                         //Ctrl-A
@@ -234,7 +235,45 @@ public class InputInterpreter {
      * @see #keyPressed(java.awt.event.KeyEvent)
      */
     private void keyPressedCtrlBackspace(KeyEvent evt) {
-
+        int currCursorIdx = consoleWindow.getTextCursorIndex();
+        if (!textEditor.inEditableZone(currCursorIdx - 1)){
+            textEditor.bringCaretToEnd();
+        } else {
+            
+            //Figures out what type of character the character before the text cursor is, and deletes all consecutive characters that are 
+            //of that same type.
+            
+            String consoleWindowText = consoleWindow.getTextPane().getText();
+            char c = consoleWindowText.charAt(currCursorIdx-1);
+            int cType = charTypeEval(c);
+            
+            int charToRemoveToIdx = textEditor.getStartEditableIdx();
+            for (int i = currCursorIdx-2; i >= textEditor.getStartEditableIdx(); i--){ // We start at cursor idx - 2 since we are
+                char currentChar = consoleWindowText.charAt(i); // checking the characters before the character that is directly before the text cursor
+                if(charTypeEval(currentChar) != cType){
+                    charToRemoveToIdx = i+1; // Once we find a character not of the same type, we set the index of the character before it
+                    break;                   // to be removed
+                }
+            }
+            textEditor.removeText(charToRemoveToIdx, currCursorIdx - 1);
+        }
+    }
+    
+    /**
+     * A private little helper function that gives a character a number based on what type of character it is.
+     * @param c the character to evaluate.
+     * @return returns 0 if c is alphabetic, 1 if c is a number, 2 if c is whitespace, and otherwise 3.
+     */
+    private int charTypeEval(char c){
+        if(Character.isAlphabetic(c)){
+                return 0;
+            } else if(Character.isDigit(c)){
+                return 1;
+            } else if(Character.isWhitespace(c))
+                return 2;
+            else {
+                return 3;
+            }
     }
 
     /**
