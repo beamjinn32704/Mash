@@ -101,7 +101,7 @@ public class InputInterpreter {
         char keyChar = evt.getKeyChar();
         if (isModifier(evt)) {
             //Do nothing if the event is triggered by pressing a modifier (ctrl, alt, shift, etc.)
-        } else if (modified(evt)) {
+        } else if (modified(evt) && !shift) { // Don't let shift trigger it because that will just go to the typers
             if (ctrl && !alt && !shift && !altGraph) { // If Ctrl is being held and nothing else
                 //Support Ctrl-A, Ctrl-C, and Ctrl-V.
                 switch (keyCode) {
