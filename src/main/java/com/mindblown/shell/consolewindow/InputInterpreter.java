@@ -119,15 +119,15 @@ public class InputInterpreter {
                     }
                 }
             }
-        } else if (isTyper(evt)) {
+        }  else if (keyCode == KeyEvent.VK_BACK_SPACE) {
+            keyPressedBackspace(evt);
+        } else {
             if (keyCode != KeyEvent.VK_ENTER) {
                 //If un-modified letter, number, whitespace, or symbol,--that is not an enter--then go as normal.
                 keyPressedCharacter(evt);
             } else {
                 keyPressedEnter(evt);
             }
-        } else if (keyCode == KeyEvent.VK_BACK_SPACE) {
-            keyPressedBackspace(evt);
         }
 
     }
@@ -166,7 +166,8 @@ public class InputInterpreter {
      */
     private boolean isTyper(KeyEvent evt) {
         int keyCode = evt.getKeyCode();
-        return Character.isAlphabetic(keyCode) || Character.isDigit(keyCode) || Character.isWhitespace(keyCode);
+        return Character.isAlphabetic(keyCode) || Character.isDigit(keyCode) || 
+                Character.isWhitespace(keyCode);
     }
 
     /**
