@@ -87,26 +87,6 @@ public class TextEditor {
     }
 
     /**
-     * Adds a specified character to the console window text at the index given
-     *
-     * @param character the character to add to the console window text
-     * @param index the index in the console window text to put the character
-     */
-    public void addChar(char character, int index) {
-        addText(character + "", index);
-    }
-
-    /**
-     * Appends a specified character to the text in the console window. The
-     * character will be added to the end of the console window text.
-     *
-     * @param character the character to add to the console window text
-     */
-    public void addChar(char character) {
-        addText(character + "", consoleWindow.getNumOfCharacters());
-    }
-
-    /**
      * Removes text from the console window text. All text is removed in between
      * and including the text at startIndex and endIndex
      *

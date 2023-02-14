@@ -31,81 +31,32 @@ public class InputInterpreter {
     private JScrollPane consoleScrollPane; //the window pane that contains the console text pane and adds the scrollbar
     private JTextPane consoleTextPane; // the console window text pane
 
-    //Used to make edits to the console window text
-    private TextEditor textEditor;
-
     // This contains all the text and the styles of the text (text color, bold, italic, etc.) in the console text pane
     private ConsoleStyledDocument consoleTextStyledDocument;
 
     private MainCompiler mainCompiler;
     
-    /**
-     * This is the starting index where the user can make changes to the
-     * document (the user can make changes at any index in the document, as long
-     * as that index >= this=startingIndex
-     */
-    private int startingIndex = 7;
+    private UserInputHandler uiHandler;
+    
+    
 
     /**
      * Instantiates a Console Window Text Editor.
      *
      * @param consoleWin the console window that objects of this class will
      * modify and change the text of
+     * @param uiHandler the input handler that will decide which of the user's "inputs" will 
+     * take effect
      */
-    public InputInterpreter(ConsoleWindow consoleWin) {
+    public InputInterpreter(ConsoleWindow consoleWin, UserInputHandler uiHandler) {
         consoleWindow = consoleWin;
 
         consoleScrollPane = consoleWindow.getScrollPane();
         consoleTextPane = consoleWindow.getTextPane();
-
-        textEditor = consoleWindow.getTextEditor();
         consoleTextStyledDocument = consoleWindow.getConsoleWindowTextStyledDocument();
 
         mainCompiler = new MainCompiler(consoleWin);
-    }
-    
-        /**
-     * Return the index of the first character in the console window that can be edited by the user.
-     * @return the index of the first character that can be edited
-     */
-    public int getStartEditableIdx() {
-        return startingIndex;
-    }
-    
-        /**
-     * Set the starting index. In the console text window, every piece of text
-     * at an index >= the starting index can be edited/changed. All text before
-     * the starting index can not be edited or changed
-     *
-     * @param startingIndex
-     */
-    public void setStartingIndex(int startingIndex) {
-        this.startingIndex = startingIndex;
-    }
-    
-        /**
-     * Returns whether the index given is in an area in the console text window
-     * where text can be edited.
-     *
-     * @param index whether the index (corresponding to a location in the
-     * console text window) is a place that can be edited.
-     * @return whether text can be edited in the console text window at the
-     * index given
-     */
-    public boolean inEditableZone(int index) {
-        return index >= startingIndex;
-    }
-    
-        /**
-     * Returns whether the text cursor in the console window is in an area where
-     * text can be edited
-     *
-     * @return whether text can be edited/changed in the location where the text
-     * cursor is at
-     */
-    public boolean isCursorInEditableZone() {
-        return inEditableZone(consoleWindow.getTextCursorIndex());
-//        return true;
+        this.uiHandler = uiHandler;
     }
 
     /**
@@ -240,20 +191,7 @@ public class InputInterpreter {
      */
     private void keyPressedCharacter(KeyEvent evt) {
         int textCursorIndex = consoleWindow.getTextCursorIndex();
-        
-        //If text cursor is in the un-editable zone, bring it to the end
-        if (!isCursorInEditableZone()) {
-            textEditor.bringCaretToEnd();
-            textCursorIndex = consoleWindow.getTextCursorIndex();
-        }
-
-        if (isCursorInEditableZone()) {
-            //If the text cursor index is now in the editable zone, add the character the user typed into 
-            //the console window
-            //We call the text editor instead of allowing the system, 
-            //so that the allow edits boolean doesn't accidentally stay true while no edits happen
-            textEditor.addChar(evt.getKeyChar(), textCursorIndex);
-        }
+        uiHandler.addText(evt.getKeyChar()+"", textCursorIndex);
     }
 
     /**
