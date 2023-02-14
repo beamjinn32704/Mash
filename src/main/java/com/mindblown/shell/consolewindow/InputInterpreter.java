@@ -38,6 +38,13 @@ public class InputInterpreter {
     private ConsoleStyledDocument consoleTextStyledDocument;
 
     private MainCompiler mainCompiler;
+    
+    /**
+     * This is the starting index where the user can make changes to the
+     * document (the user can make changes at any index in the document, as long
+     * as that index >= this=startingIndex
+     */
+    private int startingIndex = 7;
 
     /**
      * Instantiates a Console Window Text Editor.
@@ -55,6 +62,50 @@ public class InputInterpreter {
         consoleTextStyledDocument = consoleWindow.getConsoleWindowTextStyledDocument();
 
         mainCompiler = new MainCompiler(consoleWin);
+    }
+    
+        /**
+     * Return the index of the first character in the console window that can be edited by the user.
+     * @return the index of the first character that can be edited
+     */
+    public int getStartEditableIdx() {
+        return startingIndex;
+    }
+    
+        /**
+     * Set the starting index. In the console text window, every piece of text
+     * at an index >= the starting index can be edited/changed. All text before
+     * the starting index can not be edited or changed
+     *
+     * @param startingIndex
+     */
+    public void setStartingIndex(int startingIndex) {
+        this.startingIndex = startingIndex;
+    }
+    
+        /**
+     * Returns whether the index given is in an area in the console text window
+     * where text can be edited.
+     *
+     * @param index whether the index (corresponding to a location in the
+     * console text window) is a place that can be edited.
+     * @return whether text can be edited in the console text window at the
+     * index given
+     */
+    public boolean inEditableZone(int index) {
+        return index >= startingIndex;
+    }
+    
+        /**
+     * Returns whether the text cursor in the console window is in an area where
+     * text can be edited
+     *
+     * @return whether text can be edited/changed in the location where the text
+     * cursor is at
+     */
+    public boolean isCursorInEditableZone() {
+        return inEditableZone(consoleWindow.getTextCursorIndex());
+//        return true;
     }
 
     /**
@@ -115,7 +166,7 @@ public class InputInterpreter {
                         //Ctrl-V
                     }
                     case KeyEvent.VK_BACK_SPACE -> {
-                        keyPressedCtrlBackspace(evt); //Currently does nothing
+                        keyPressedCtrlBackspace(evt);
                     }
                 }
             }
@@ -189,14 +240,14 @@ public class InputInterpreter {
      */
     private void keyPressedCharacter(KeyEvent evt) {
         int textCursorIndex = consoleWindow.getTextCursorIndex();
-
+        
         //If text cursor is in the un-editable zone, bring it to the end
-        if (!textEditor.isCursorInEditableZone()) {
+        if (!isCursorInEditableZone()) {
             textEditor.bringCaretToEnd();
             textCursorIndex = consoleWindow.getTextCursorIndex();
         }
 
-        if (textEditor.isCursorInEditableZone()) {
+        if (isCursorInEditableZone()) {
             //If the text cursor index is now in the editable zone, add the character the user typed into 
             //the console window
             //We call the text editor instead of allowing the system, 
@@ -217,7 +268,8 @@ public class InputInterpreter {
      * @see #keyPressedCtrlBackspace(java.awt.event.KeyEvent)
      */
     private void keyPressedBackspace(KeyEvent evt) {
-        if (textEditor.inEditableZone(consoleWindow.getTextCursorIndex() - 1)) {
+        handleSelections("");
+        if (inEditableZone(consoleWindow.getTextCursorIndex() - 1)) {
             //If the character before the text cursor (aka the character that will be backspaced) can be edited, remove 
             //the character
             textEditor.removeCharacter(consoleWindow.getTextCursorIndex() - 1);
@@ -225,6 +277,15 @@ public class InputInterpreter {
             //Otherwise, just bring the text cursor to the end of the document
             textEditor.bringCaretToEnd();
         }
+    }
+    
+    /**
+     * Handle what happens when the user types something while something is selected--namely, replaces the selected text 
+     * with what the user typed. If no text is selected, then the function doesn't do anything. 
+     * @param replacement The character the user typed (aka the character the selected text should be replaced with)
+     */
+    private void handleSelections(String replacement){
+        textEditor.replaceSelectedText(replacement);
     }
 
     /**
@@ -237,7 +298,7 @@ public class InputInterpreter {
      */
     private void keyPressedCtrlBackspace(KeyEvent evt) {
         int currCursorIdx = consoleWindow.getTextCursorIndex();
-        if (!textEditor.inEditableZone(currCursorIdx - 1)){
+        if (!inEditableZone(currCursorIdx - 1)){
             textEditor.bringCaretToEnd();
         } else {
             
@@ -248,8 +309,8 @@ public class InputInterpreter {
             char c = consoleWindowText.charAt(currCursorIdx-1);
             int cType = charTypeEval(c);
             
-            int charToRemoveToIdx = textEditor.getStartEditableIdx();
-            for (int i = currCursorIdx-2; i >= textEditor.getStartEditableIdx(); i--){ // We start at cursor idx - 2 since we are
+            int charToRemoveToIdx = getStartEditableIdx();
+            for (int i = currCursorIdx-2; i >= getStartEditableIdx(); i--){ // We start at cursor idx - 2 since we are
                 char currentChar = consoleWindowText.charAt(i); // checking the characters before the character that is directly before the text cursor
                 if(charTypeEval(currentChar) != cType){
                     charToRemoveToIdx = i+1; // Once we find a character not of the same type, we set the index of the character before it
@@ -288,7 +349,7 @@ public class InputInterpreter {
     private void keyPressedEnter(KeyEvent evt) {
         //Add the two new lines for formatting
         textEditor.addText("\n\n");
-        textEditor.setStartingIndex(consoleWindow.getNumOfCharacters());
+        setStartingIndex(consoleWindow.getNumOfCharacters());
         mainCompiler.processCommand(new Command("go"));
 //        ..Have created the Command object. Now work on conntecting the InputInterpreter to the MainCompiler
 //                ..Start getting a command to work, even if its useless (like making it so that when the user types "hi"),

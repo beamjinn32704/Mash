@@ -24,13 +24,6 @@ public class TextEditor {
     private JScrollPane consoleScrollPane; //the window pane that contains the console text pane and adds the scrollbar
     private JTextPane consoleTextPane; // the console window text pane
     private ConsoleStyledDocument consoleTextStyleDoc;
-    
-    /**
-     * This is the starting index where the user can make changes to the
-     * document (the user can make changes at any index in the document, as long
-     * as that index >= this=startingIndex
-     */
-    private int startingIndex = 7;
 
     /**
      * Instantiates a Console Window Text Editor.
@@ -57,15 +50,6 @@ public class TextEditor {
      */
     public void setTextCursorIndex(int index) {
         consoleTextPane.setCaretPosition(Math.min(index, consoleWindow.getNumOfCharacters()));
-
-    }
-    
-    /**
-     * Return the index of the first character in the console window that can be edited by the user.
-     * @return the index of the first character that can be edited
-     */
-    public int getStartEditableIdx() {
-        return startingIndex;
     }
 
     /**
@@ -73,42 +57,6 @@ public class TextEditor {
      */
     public void bringCaretToEnd() {
         consoleTextPane.setCaretPosition(consoleWindow.getNumOfCharacters());
-    }
-    
-    /**
-     * Set the starting index. In the console text window, every piece of text
-     * at an index >= the starting index can be edited/changed. All text before
-     * the starting index can not be edited or changed
-     *
-     * @param startingIndex
-     */
-    public void setStartingIndex(int startingIndex) {
-        this.startingIndex = startingIndex;
-    }
-    
-    /**
-     * Returns whether the text cursor in the console window is in an area where
-     * text can be edited
-     *
-     * @return whether text can be edited/changed in the location where the text
-     * cursor is at
-     */
-    public boolean isCursorInEditableZone() {
-        return inEditableZone(consoleWindow.getTextCursorIndex());
-//        return true;
-    }
-
-    /**
-     * Returns whether the index given is in an area in the console text window
-     * where text can be edited.
-     *
-     * @param index whether the index (corresponding to a location in the
-     * console text window) is a place that can be edited.
-     * @return whether text can be edited in the console text window at the
-     * index given
-     */
-    public boolean inEditableZone(int index) {
-        return index >= startingIndex;
     }
 
     /**
@@ -191,6 +139,19 @@ public class TextEditor {
         try {
             //The "1" indicates that only one character is to be removed: the character at the index given
             consoleTextStyleDoc.remove(index, 1);
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    /**
+     * Replace the text currently selected by the user with the string passed to this function.
+     * @param text the string to replace the currently selected text with
+     */
+    public void replaceSelectedText(String text){
+        consoleTextStyleDoc.allowEdits();
+        try {
+            consoleTextStyleDoc.replace(consoleTextPane.getSelectionStart(), consoleTextPane.getSelectionEnd(), text, null);
         } catch (BadLocationException ex) {
             ex.printStackTrace();
         }

@@ -71,10 +71,10 @@ public class ConsoleStyledDocument extends DefaultStyledDocument {
 
     @Override
     public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-//        DebugPrinter.printlnCustomNorm("Replace", offset, length, text, attrs);
-        super.replace(offset, length, text, attrs); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-//        DebugPrinter.println("Replace Allowed");
-//        DebugPrinter.printlnCustomNorm("Replace Canceled", offset, length, text, attrs);
+        if(allowEdits){
+            allowEdits = false;
+            super.replace(offset, length, text, attrs);
+        }
     }
 
 }
