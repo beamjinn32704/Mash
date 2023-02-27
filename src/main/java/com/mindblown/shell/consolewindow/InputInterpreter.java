@@ -206,24 +206,14 @@ public class InputInterpreter {
      * @see #keyPressedCtrlBackspace(java.awt.event.KeyEvent)
      */
     private void keyPressedBackspace(KeyEvent evt) {
-        handleSelections("");
-        if (inEditableZone(consoleWindow.getTextCursorIndex() - 1)) {
-            //If the character before the text cursor (aka the character that will be backspaced) can be edited, remove 
-            //the character
-            textEditor.removeCharacter(consoleWindow.getTextCursorIndex() - 1);
+        int selectionStart = consoleTextPane.getSelectionStart();
+        int selectionEnd = consoleTextPane.getSelectionEnd();
+        if (selectionStart != selectionEnd){
+            //If text is selected
+            uiHandler.removeText(selectionStart, selectionEnd);
         } else {
-            //Otherwise, just bring the text cursor to the end of the document
-            textEditor.bringCaretToEnd();
+            uiHandler.removeCharacter(consoleWindow.getTextCursorIndex() - 1);
         }
-    }
-    
-    /**
-     * Handle what happens when the user types something while something is selected--namely, replaces the selected text 
-     * with what the user typed. If no text is selected, then the function doesn't do anything. 
-     * @param replacement The character the user typed (aka the character the selected text should be replaced with)
-     */
-    private void handleSelections(String replacement){
-        textEditor.replaceSelectedText(replacement);
     }
 
     /**

@@ -96,4 +96,64 @@ public class UserInputHandler {
             textEditor.addText(text, index);
         }
     }
+    
+    /**
+     * Removes the text at indices from startInd to endInd (both inclusive) from the console window. If startInd==endInd, 
+     * the only the character at index = startInd = endInd will be removed
+     * @param startInd the index referring to the first character in the console window to be removed
+     * @param endInd the index referring to the last character in the console window to be removed
+     */
+    public void removeText(int startInd, int endInd){
+        assert(endInd >= startInd && startInd >= 0 && endInd < consoleWindow.getNumOfCharacters());
+        
+        int[] correctSelection = correctSelection(startInd, endInd);
+        textEditor.removeText(correctSelection[0], correctSelection[1]);
+    }
+    
+    /**
+     * Removes a character from the console window.
+     * @param ind the index corresponding to the character. If this was 0, for example, it would refer to the first 
+     * character in the console window
+     */
+    public void removeCharacter(int ind){
+        if (inEditableZone(ind)) {
+            //If the character before the text cursor (aka the character that will be deleted) can be edited, remove 
+            //the character
+            textEditor.removeCharacter(ind);
+        } else {
+            //Otherwise, just bring the text cursor to the end of the document
+            textEditor.bringCaretToEnd();
+        }
+    }
+    
+//    /**
+//     * Takes an index corresponding to a position in the console window text (that the user 
+//     * presumably wants to do some edit operations at) and returns an index that the user can edit at. 
+//     * If the user can't edit at the index, the index returned will be the largest editable index. If the user 
+//     * can edit at the index, then the index passed to the function will be returned.
+//     * @param ind the index the user wants to edit at
+//     * @return the modified index
+//     */
+//    private int correctInd(int ind){
+//        if (ind >= startingIndex){
+//            return ind;
+//        } else {
+//            return Math.max(startingIndex, )
+//        }
+//    }
+    
+    /**
+     * Takes the indices corresponding to the beginning and end of the text in the console window that the user 
+     * has selected, modifies them so that they don't refer to indices before the starting index (the first 
+     * index editable by the user), and returns an array  containing them.
+     * @param startInd the first index of the user-selected text
+     * @param endInd the last index of the user-selected text
+     * @return an array containing the new start index and end index. If array = A, then A[0] = new-start-index, and 
+     * A[1] = new-end-index
+     */
+    private int[] correctSelection(int startInd, int endInd){
+        startInd = Math.max(startingIndex, startInd);
+        endInd = Math.max(startInd, endInd);
+        return new int[]{startInd, endInd};
+    }
 }

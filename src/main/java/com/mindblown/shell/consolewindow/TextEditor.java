@@ -99,7 +99,7 @@ public class TextEditor {
      * but not the character after this index.
      */
     public void removeText(int startIndex, int endIndex) {
-        assert(endIndex > startIndex && startIndex >= 0 && endIndex < consoleWindow.getNumOfCharacters());
+        assert(endIndex >= startIndex && startIndex >= 0 && endIndex < consoleWindow.getNumOfCharacters());
         consoleTextStyleDoc.allowEdits();
         try {
             //Do the "endIndex - startIndex + 1" because this makes sure the endIndex is included
