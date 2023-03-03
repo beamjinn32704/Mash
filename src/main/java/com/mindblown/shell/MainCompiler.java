@@ -34,9 +34,7 @@ public class MainCompiler extends OverlayingCompiler {
     public void processCommand(Command command) {
         String name = command.getCommandName();
         if (name.equals("test")){
-            TextEditor textEditor = consoleWindow.getTextEditor();
-            textEditor.appendText("Test Is a Go!\n\nPrompt>");
-            consoleWindow.getUiHandler().moveStartingIndexToEnd();
+            new TestProgram(consoleWindow).run();
         }
     }
 }
