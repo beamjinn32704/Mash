@@ -5,6 +5,7 @@
 package com.mindblown.shell.consolewindow;
 
 import com.mindblown.shell.Command;
+import com.mindblown.shell.MainCompiler;
 
 /**
  * Objects of this class filter the text edits that the user wants to make to the console document, 
@@ -17,11 +18,14 @@ public class UserInputHandler {
     
     private TextEditor textEditor;
     private ConsoleWindow consoleWindow;
+    private MainCompiler compiler;
 
     public UserInputHandler(ConsoleWindow consoleWindow) {
         this.consoleWindow = consoleWindow;
         
         textEditor = consoleWindow.getTextEditor();
+        
+        compiler = new MainCompiler(consoleWindow);
     }
     
     
@@ -49,6 +53,17 @@ public class UserInputHandler {
      */
     public void setStartingIndex(int startingIndex) {
         this.startingIndex = startingIndex;
+    }
+    
+    /**
+     * Moves the starting index to the end. This means all the text currently in the console window will be 
+     * uneditable by the user
+     *
+     * @see #setStartingIndex(int) 
+     */
+    public void moveStartingIndexToEnd(){
+        
+        setStartingIndex(consoleWindow.getTextLength());
     }
     
     /**
@@ -174,6 +189,6 @@ public class UserInputHandler {
     public void enter(){
         appendText("\n\n");
         setStartingIndex(consoleWindow.getNumOfCharacters());
-        mainCompiler.processCommand(new Command("go"));
+        compiler.processCommand(new Command("test"));
     }
 }

@@ -22,6 +22,7 @@ public class ConsoleWindow extends javax.swing.JFrame {
     private SettingsEditor settingsEditor;
     private TextEditor textEditor;
     private InputInterpreter inputInterpreter;
+    private UserInputHandler uiHandler;
 
     // This contains all the text and the styles of the text (text color, bold, italic, etc.) in the console text pane
     private ConsoleStyledDocument consoleTextStyledDocument = new ConsoleStyledDocument();
@@ -42,12 +43,22 @@ public class ConsoleWindow extends javax.swing.JFrame {
         
         settingsEditor = new SettingsEditor(this);
         textEditor = new TextEditor(this);
-        inputInterpreter = new InputInterpreter(this, new UserInputHandler(this));
+        uiHandler = new UserInputHandler(this);
+        inputInterpreter = new InputInterpreter(this, uiHandler);
         
 //        program = new Program(compiler, this);
         
         textEditor.addText("Prompt>", 0);
         
+    }
+    
+    /**
+     * Returns the UserInputHandler for this ConsoleWindow. It determines which of the user's "actions" (like typing, 
+     * backspacing, etc.) are allowed, and implements those that are allowed
+     * @return this consoleWindow's user input handler
+     */
+    public UserInputHandler getUiHandler() {
+        return uiHandler;
     }
     
     /**

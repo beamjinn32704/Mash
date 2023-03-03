@@ -82,7 +82,7 @@ public class TextEditor {
      *
      * @param text the string to add to the console window text
      */
-    public void addText(String text) {
+    public void appendText(String text) {
         addText(text, consoleWindow.getTextLength());
     }
 

@@ -5,6 +5,7 @@
 package com.mindblown.shell;
 
 import com.mindblown.shell.consolewindow.ConsoleWindow;
+import com.mindblown.shell.consolewindow.TextEditor;
 
 /**
  * This is the compiler used by the ConsoleWindow when the ConsoleWindow starts.
@@ -31,6 +32,11 @@ public class MainCompiler extends OverlayingCompiler {
 
     @Override
     public void processCommand(Command command) {
-        
+        String name = command.getCommandName();
+        if (name.equals("test")){
+            TextEditor textEditor = consoleWindow.getTextEditor();
+            textEditor.appendText("Test Is a Go!\n\nPrompt>");
+            consoleWindow.getUiHandler().moveStartingIndexToEnd();
+        }
     }
 }
