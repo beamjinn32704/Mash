@@ -206,12 +206,25 @@ public class InputInterpreter {
     private void keyPressedBackspace(KeyEvent evt) {
         int selectionStart = consoleTextPane.getSelectionStart();
         int selectionEnd = consoleTextPane.getSelectionEnd();
+        
         if (selectionStart != selectionEnd) {
             //If text is selected
             uiHandler.removeText(selectionStart, selectionEnd);
+            unselectText();
+            
         } else {
             uiHandler.removeCharacter(consoleWindow.getTextCursorIndex() - 1);
         }
+        
+    }
+    
+    /**
+     * If the user has any text selected in the console window, it will be unselected.
+     */
+    private void unselectText(){
+        int cursorIdx = consoleWindow.getTextCursorIndex();
+        consoleTextPane.setSelectionStart(cursorIdx);
+        consoleTextPane.setSelectionEnd(cursorIdx);
     }
 
     /**
@@ -231,8 +244,7 @@ public class InputInterpreter {
 
         if (selectionStart != selectionEnd) {
             //If something is selected, unselect it
-            consoleTextPane.setSelectionStart(cursorIdx);
-            consoleTextPane.setSelectionEnd(cursorIdx);
+            unselectText();
         }
 
         //Figures out what type of character the character before the text cursor is, and deletes all consecutive characters that are 
