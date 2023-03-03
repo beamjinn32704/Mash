@@ -174,6 +174,6 @@ public class UserInputHandler {
     public void enter(){
         appendText("\n\n");
         setStartingIndex(consoleWindow.getNumOfCharacters());
-//        mainCompiler.processCommand(new Command("go"));
+        mainCompiler.processCommand(new Command("go"));
     }
 }

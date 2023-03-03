@@ -28,13 +28,10 @@ public class InputInterpreter {
     private ConsoleWindow consoleWindow;
 
     /* These are components of the console */
-    private JScrollPane consoleScrollPane; //the window pane that contains the console text pane and adds the scrollbar
     private JTextPane consoleTextPane; // the console window text pane
 
     // This contains all the text and the styles of the text (text color, bold, italic, etc.) in the console text pane
     private ConsoleStyledDocument consoleTextStyledDocument;
-
-    private MainCompiler mainCompiler;
 
     private UserInputHandler uiHandler;
 
@@ -48,12 +45,10 @@ public class InputInterpreter {
      */
     public InputInterpreter(ConsoleWindow consoleWin, UserInputHandler uiHandler) {
         consoleWindow = consoleWin;
-
-        consoleScrollPane = consoleWindow.getScrollPane();
+        
         consoleTextPane = consoleWindow.getTextPane();
         consoleTextStyledDocument = consoleWindow.getConsoleWindowTextStyledDocument();
 
-        mainCompiler = new MainCompiler(consoleWin);
         this.uiHandler = uiHandler;
     }
 
