@@ -121,6 +121,8 @@ public class InputInterpreter {
             }
         } else if (keyCode == KeyEvent.VK_BACK_SPACE) {
             keyPressedBackspace(evt);
+        } else if (isArrow(evt)){
+            keyPressedArrow(evt);
         } else {
             if (keyCode != KeyEvent.VK_ENTER) {
                 //If un-modified letter, number, whitespace, or symbol,--that is not an enter--then go as normal.
@@ -130,6 +132,31 @@ public class InputInterpreter {
             }
         }
 
+    }
+    
+    /**
+     * Returns whether or not a KeyEvent was caused by the user pressing one of the arrows on the keyboard
+     * @param evt the key event triggered by the user
+     * @return whether the key event is caused by an arrow
+     */
+    private boolean isArrow(KeyEvent evt){
+        int evtNum = evt.getKeyCode();
+        return evtNum == KeyEvent.VK_LEFT || evtNum == KeyEvent.VK_RIGHT || 
+                evtNum == KeyEvent.VK_UP || evtNum == KeyEvent.VK_DOWN;
+    }
+    
+    
+    /**
+     * Handles what happens when the user presses an arrow on their keyboard, into the console window
+     * @param evt the key event triggered by the user pressing the arrow
+     */
+    private void keyPressedArrow(KeyEvent evt){
+        int evtCode = evt.getKeyCode();
+        if (evtCode == KeyEvent.VK_LEFT || evtCode == KeyEvent.VK_RIGHT){
+            //If pressed left or right arrow do nothing
+        } else {
+            //If pressed up or down arrow...do nothing for now; later implement retrieving previous commands
+        }
     }
 
     /**
