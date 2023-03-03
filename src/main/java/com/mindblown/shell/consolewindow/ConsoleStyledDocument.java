@@ -65,6 +65,7 @@ public class ConsoleStyledDocument extends DefaultStyledDocument {
         //removed
         if (allowEdits) {
             allowEdits = false;
+            System.out.println("REMOVE: " + offs + " " + len);
             super.remove(offs, len); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         }
     }

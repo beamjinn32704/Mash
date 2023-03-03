@@ -4,6 +4,8 @@
  */
 package com.mindblown.shell.consolewindow;
 
+import com.mindblown.shell.Command;
+
 /**
  * Objects of this class filter the text edits that the user wants to make to the console document, 
  * and handle the logistics of those edits. A fundamental piece of "philosophy" underlying the objects 
@@ -71,6 +73,14 @@ public class UserInputHandler {
      */
     public boolean isCursorInEditableZone() {
         return inEditableZone(consoleWindow.getTextCursorIndex());
+    }
+    
+    /**
+     * Appends text to the console window
+     * @param text the text to add
+     */
+    public void appendText(String text){
+        addText(text, consoleWindow.getTextLength());
     }
     
     /**
@@ -154,6 +164,16 @@ public class UserInputHandler {
     private int[] correctSelection(int startInd, int endInd){
         startInd = Math.max(startingIndex, startInd);
         endInd = Math.max(startInd, endInd);
+        endInd = Math.min(endInd, consoleWindow.getTextLength()-1);
         return new int[]{startInd, endInd};
+    }
+    
+    /**
+     * Follows the actions needed to be taken when the user presses the "Enter" key in the console window
+     */
+    public void enter(){
+        appendText("\n\n");
+        setStartingIndex(consoleWindow.getNumOfCharacters());
+//        mainCompiler.processCommand(new Command("go"));
     }
 }

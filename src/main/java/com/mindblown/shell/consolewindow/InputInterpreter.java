@@ -35,18 +35,16 @@ public class InputInterpreter {
     private ConsoleStyledDocument consoleTextStyledDocument;
 
     private MainCompiler mainCompiler;
-    
+
     private UserInputHandler uiHandler;
-    
-    
 
     /**
      * Instantiates a Console Window Text Editor.
      *
      * @param consoleWin the console window that objects of this class will
      * modify and change the text of
-     * @param uiHandler the input handler that will decide which of the user's "inputs" will 
-     * take effect
+     * @param uiHandler the input handler that will decide which of the user's
+     * "inputs" will take effect
      */
     public InputInterpreter(ConsoleWindow consoleWin, UserInputHandler uiHandler) {
         consoleWindow = consoleWin;
@@ -121,7 +119,7 @@ public class InputInterpreter {
                     }
                 }
             }
-        }  else if (keyCode == KeyEvent.VK_BACK_SPACE) {
+        } else if (keyCode == KeyEvent.VK_BACK_SPACE) {
             keyPressedBackspace(evt);
         } else {
             if (keyCode != KeyEvent.VK_ENTER) {
@@ -168,8 +166,8 @@ public class InputInterpreter {
      */
     private boolean isTyper(KeyEvent evt) {
         int keyCode = evt.getKeyCode();
-        return Character.isAlphabetic(keyCode) || Character.isDigit(keyCode) || 
-                Character.isWhitespace(keyCode);
+        return Character.isAlphabetic(keyCode) || Character.isDigit(keyCode)
+                || Character.isWhitespace(keyCode);
     }
 
     /**
@@ -191,7 +189,7 @@ public class InputInterpreter {
      */
     private void keyPressedCharacter(KeyEvent evt) {
         int textCursorIndex = consoleWindow.getTextCursorIndex();
-        uiHandler.addText(evt.getKeyChar()+"", textCursorIndex);
+        uiHandler.addText(evt.getKeyChar() + "", textCursorIndex);
     }
 
     /**
@@ -208,7 +206,7 @@ public class InputInterpreter {
     private void keyPressedBackspace(KeyEvent evt) {
         int selectionStart = consoleTextPane.getSelectionStart();
         int selectionEnd = consoleTextPane.getSelectionEnd();
-        if (selectionStart != selectionEnd){
+        if (selectionStart != selectionEnd) {
             //If text is selected
             uiHandler.removeText(selectionStart, selectionEnd);
         } else {
@@ -225,45 +223,54 @@ public class InputInterpreter {
      * @see #keyPressed(java.awt.event.KeyEvent)
      */
     private void keyPressedCtrlBackspace(KeyEvent evt) {
-        int currCursorIdx = consoleWindow.getTextCursorIndex();
-        if (!inEditableZone(currCursorIdx - 1)){
-            textEditor.bringCaretToEnd();
-        } else {
-            
-            //Figures out what type of character the character before the text cursor is, and deletes all consecutive characters that are 
-            //of that same type.
-            
-            String consoleWindowText = consoleWindow.getTextPane().getText();
-            char c = consoleWindowText.charAt(currCursorIdx-1);
-            int cType = charTypeEval(c);
-            
-            int charToRemoveToIdx = getStartEditableIdx();
-            for (int i = currCursorIdx-2; i >= getStartEditableIdx(); i--){ // We start at cursor idx - 2 since we are
-                char currentChar = consoleWindowText.charAt(i); // checking the characters before the character that is directly before the text cursor
-                if(charTypeEval(currentChar) != cType){
-                    charToRemoveToIdx = i+1; // Once we find a character not of the same type, we set the index of the character before it
-                    break;                   // to be removed
-                }
-            }
-            textEditor.removeText(charToRemoveToIdx, currCursorIdx - 1);
+
+        int selectionStart = consoleTextPane.getSelectionStart();
+        int selectionEnd = consoleTextPane.getSelectionEnd();
+
+        int cursorIdx = consoleWindow.getTextCursorIndex();
+
+        if (selectionStart != selectionEnd) {
+            //If something is selected, unselect it
+            consoleTextPane.setSelectionStart(cursorIdx);
+            consoleTextPane.setSelectionEnd(cursorIdx);
         }
-    }
-    
-    /**
-     * A private little helper function that gives a character a number based on what type of character it is.
-     * @param c the character to evaluate.
-     * @return returns 0 if c is alphabetic, 1 if c is a number, 2 if c is whitespace, and otherwise 3.
-     */
-    private int charTypeEval(char c){
-        if(Character.isAlphabetic(c)){
-                return 0;
-            } else if(Character.isDigit(c)){
-                return 1;
-            } else if(Character.isWhitespace(c))
-                return 2;
-            else {
-                return 3;
+
+        //Figures out what type of character the character before the text cursor is, and deletes all consecutive characters that are 
+        //of that same type.
+        String consoleWindowText = consoleWindow.getTextPane().getText();
+        char c = consoleWindowText.charAt(cursorIdx - 1);
+        int cType = charTypeEval(c);
+        
+        int idxToRemoveTo = 0;
+        
+        for (int i = cursorIdx - 2; i >= 0; i--) { // We start at cursor idx - 2 since we are checking the characters before the character that is directly before the text cursor
+            char currentChar = consoleWindowText.charAt(i); 
+            if (charTypeEval(currentChar) != cType) {
+                idxToRemoveTo = i + 1; // Once we find a character not of the same type, we set the index of the character before it
+                break;                   // to be removed
             }
+        }
+        uiHandler.removeText(idxToRemoveTo, cursorIdx - 1);
+    }
+
+    /**
+     * A private little helper function that gives a character a number based on
+     * what type of character it is.
+     *
+     * @param c the character to evaluate.
+     * @return returns 0 if c is alphabetic, 1 if c is a number, 2 if c is
+     * whitespace, and otherwise 3.
+     */
+    private int charTypeEval(char c) {
+        if (Character.isAlphabetic(c)) {
+            return 0;
+        } else if (Character.isDigit(c)) {
+            return 1;
+        } else if (Character.isWhitespace(c)) {
+            return 2;
+        } else {
+            return 3;
+        }
     }
 
     /**
@@ -276,9 +283,7 @@ public class InputInterpreter {
      */
     private void keyPressedEnter(KeyEvent evt) {
         //Add the two new lines for formatting
-        textEditor.addText("\n\n");
-        setStartingIndex(consoleWindow.getNumOfCharacters());
-        mainCompiler.processCommand(new Command("go"));
+        uiHandler.enter();
 //        ..Have created the Command object. Now work on conntecting the InputInterpreter to the MainCompiler
 //                ..Start getting a command to work, even if its useless (like making it so that when the user types "hi"),
 //                the program does System.out.println("Hi to you too!")

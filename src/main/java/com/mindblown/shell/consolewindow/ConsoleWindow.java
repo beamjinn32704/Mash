@@ -42,12 +42,20 @@ public class ConsoleWindow extends javax.swing.JFrame {
         
         settingsEditor = new SettingsEditor(this);
         textEditor = new TextEditor(this);
-        inputInterpreter = new InputInterpreter(this);
+        inputInterpreter = new InputInterpreter(this, new UserInputHandler(this));
         
 //        program = new Program(compiler, this);
         
         textEditor.addText("Prompt>", 0);
         
+    }
+    
+    /**
+     * Gets the length of the text in the console window
+     * @return the length of the text
+     */
+    public int getTextLength(){
+        return consoleTextStyledDocument.getLength();
     }
     
     /**
