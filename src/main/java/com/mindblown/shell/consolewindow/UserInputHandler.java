@@ -6,6 +6,9 @@ package com.mindblown.shell.consolewindow;
 
 import com.mindblown.shell.Command;
 import com.mindblown.shell.MainCompiler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.text.BadLocationException;
 
 /**
  * Objects of this class filter the text edits that the user wants to make to the console document, 
@@ -62,7 +65,6 @@ public class UserInputHandler {
      * @see #setStartingIndex(int) 
      */
     public void moveStartingIndexToEnd(){
-        
         setStartingIndex(consoleWindow.getTextLength());
     }
     
@@ -187,8 +189,14 @@ public class UserInputHandler {
      * Follows the actions needed to be taken when the user presses the "Enter" key in the console window
      */
     public void enter(){
+        String userCommand = null;
+        try {
+            userCommand = consoleWindow.getTextPane().getText(startingIndex, consoleWindow.getTextLength()-startingIndex);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(UserInputHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
         appendText("\n\n");
         setStartingIndex(consoleWindow.getNumOfCharacters());
-        compiler.processCommand(new Command("test"));
+        compiler.processCommand(new Command(userCommand));
     }
 }
